@@ -1,0 +1,33 @@
+language: node_js
+node_js:
+  - lts/*
+
+cache:
+  directories:
+    - node_modules
+
+before_install:
+  - export TZ='Asia/Taipei'
+
+install:
+  - npm install hexo-cli -g
+  - npm install
+
+before_script:
+  - git clone --branch master https://github.com/EmL0777/EmL0777.github.io public
+
+script:
+  - npm run build
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name ""EmL0777
+  - git config user.email "eml0777.chen@gmail.com"
+  - git add .
+  - git commit -m "Travis CI Auto Builder at $(date +'%Y-%m-%d %H:%M:%S')"
+  - git push https://$HEXO_DEPLOY@github.com/EmL0777/EmL0777.github.io.git master
+
+branches:
+  only:
+    - hexo
